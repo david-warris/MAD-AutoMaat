@@ -25,7 +25,8 @@ class LoginScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  final token = await authService.login(usernameController.text, passwordController.text);
+                  await authService.login(usernameController.text, passwordController.text);
+                  
                   Navigator.pushReplacementNamed(context, '/home');
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));

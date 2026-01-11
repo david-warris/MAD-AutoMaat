@@ -6,7 +6,7 @@ class CarService {
   final ApiService api = ApiService();
 
   Future<List<Car>> fetchCars({String? token}) async {
-    final response = await api.get('/api/cars', token: token);
+    final response = await api.get('/api/cars');
     if (response.statusCode == 200) {
       List data = jsonDecode(response.body);
       return data.map((e) => Car.fromJson(e)).toList();

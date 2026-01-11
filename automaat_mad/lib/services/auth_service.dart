@@ -10,11 +10,15 @@ class AuthService {
       'username': username,
       'password': password,
       'rememberMe': true,
-    });
+    },
+    auth: false,
+    );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return data['id_token'];
+      final token = data['id_token'];
+      api.setToken(token);
+      return token;
     } else {
       throw Exception('Login mislukt');
     }
