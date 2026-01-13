@@ -20,7 +20,7 @@ class CarDetailScreen extends StatelessWidget {
             const SizedBox(height: 12),
             ElevatedButton(
               onPressed: () {
-                // Ga naar rental screen
+                Navigator.pushNamed(context, '/rental', arguments: car); 
               },
               child: const Text('Huur auto'),
             ),

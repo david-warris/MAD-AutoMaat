@@ -26,8 +26,8 @@ class LoginScreen extends StatelessWidget {
               onPressed: () async {
                 try {
                   await authService.login(usernameController.text, passwordController.text);
-                  
-                  Navigator.pushReplacementNamed(context, '/home');
+
+                  Navigator.pushNamed(context, '/home', arguments: usernameController.text);
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
                 }

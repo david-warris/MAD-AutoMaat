@@ -43,7 +43,7 @@ class RegisterScreen extends StatelessWidget {
                   if (passwordController.text != passwordRecheckController.text) {
                     throw Exception('Passwords do not match');
                   } else if (!emailController.text.contains('@') 
-                  && !emailController.text.contains('.')) {
+                  || !emailController.text.contains('.')) {
                     throw Exception('Invalid email address');
                   } else {
                     await apiService.post('/api/AM/register', {
@@ -57,7 +57,7 @@ class RegisterScreen extends StatelessWidget {
                     },
                     auth: false,
                     );
-                    Navigator.pushReplacementNamed(context, '/home');
+                    Navigator.pushReplacementNamed(context, '/login');
                   }
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));

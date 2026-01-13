@@ -1,34 +1,115 @@
 import 'package:automaat_mad/models/car.dart';
 import 'package:automaat_mad/services/car_service.dart';
+import 'package:automaat_mad/services/rental_service.dart';
 import 'package:automaat_mad/widgets/car_card.dart';
 import 'package:flutter/material.dart';
 
-
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+
+class _HomeScreenState extends State<HomeScreen> {
+  final CarService carService = CarService();
+  final RentalService rentalService = RentalService();
+
+  late Future<_HomeData> homeData;
+
+  @override
+  void initState() {
+    super.initState();
+    homeData = _fetchHomeData();
+  }
+
+  Future<_HomeData> _fetchHomeData() async {
+    final cars = await carService.fetchCars();
+    final rentals = await rentalService.fetchRentals();
+    return _HomeData(cars: cars, rentals: rentals);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final CarService carService = CarService();
-
     return Scaffold(
       appBar: AppBar(title: const Text('Beschikbare auto’s')),
-      body: FutureBuilder<List<Car>>(
-        future: carService.fetchCars(),
+      body: FutureBuilder<_HomeData>(
+        future: homeData,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (snapshot.hasError) {
-            return const Center(child: Text('Fout bij laden'));
-          }
 
-          final cars = snapshot.data!;
+          if (snapshot.hasError) {
+  return Center(
+    child: Text(
+      snapshot.error.toString(),
+      style: const TextStyle(color: Colors.red),
+    ),
+  );
+}
+
+
+          final cars = snapshot.data!.cars;
+          final rentals = snapshot.data!.rentals;
+
           return ListView.builder(
             itemCount: cars.length,
-            itemBuilder: (context, index) => CarCard(car: cars[index]),
+            itemBuilder: (context, index) {
+              final car = cars[index];
+
+              // 🔍 check of deze car een actieve rental heeft
+              final hasActiveRental = rentals.any(
+                (rental) =>
+                    rental.carId == car.id &&
+                    rental.state != 'RETURNED',
+              );
+
+              return CarCard(
+                car: car,
+                available: !hasActiveRental,
+              );
+            },
           );
         },
       ),
     );
   }
 }
+class _HomeData {
+  final List<Car> cars;
+  final List rentals;
+
+  _HomeData({required this.cars, required this.rentals});
+}
+
+
+// class HomeScreen extends StatelessWidget {
+//   const HomeScreen({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     final CarService carService = CarService();
+
+//     return Scaffold(
+//       appBar: AppBar(title: const Text('Beschikbare auto’s')),
+//       body: FutureBuilder<List<Car>>(
+//         future: carService.fetchCars(),
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return const Center(child: CircularProgressIndicator());
+//           }
+//           if (snapshot.hasError) {
+//             return const Center(child: Text('Fout bij laden'));
+//           }
+
+//           final cars = snapshot.data!;
+//           return ListView.builder(
+//             itemCount: cars.length,
+//             itemBuilder: (context, index) => CarCard(car: cars[index]),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
