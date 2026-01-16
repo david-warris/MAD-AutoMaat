@@ -1,3 +1,5 @@
+import 'package:automaat_mad/models/car.dart';
+
 class Rental {
   final int id;
   final double? latitude;
@@ -6,7 +8,7 @@ class Rental {
   final DateTime? endDate;
   final String state;
   final int customerId;
-  final int carId;
+  final Car car;
 
   Rental({
     required this.id,
@@ -16,7 +18,7 @@ class Rental {
     this.endDate,
     required this.state,
     required this.customerId,
-    required this.carId,
+    required this.car,
   });
 
   factory Rental.fromJson(Map<String, dynamic> json) {
@@ -30,8 +32,7 @@ class Rental {
     endDate: json['toDate'] != null ? DateTime.parse(json['toDate']) : null,
     state: json['state'] ?? 'UNKNOWN',
     customerId: json['customer']?['id'] ?? 0,
-    carId: json['car']?['id'] ?? 0,
+    car: Car.fromJson(json['car'] ?? {}),
   );
-}
-
+  }
 }

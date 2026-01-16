@@ -1,3 +1,4 @@
+import 'package:automaat_mad/screens/rental_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
@@ -17,6 +18,7 @@ class AutoMaatApp extends StatelessWidget {
         '/register': (_) => const RegisterScreen(),
         '/home': (_) => const HomeScreen(),
         '/profile': (_) => const ProfileScreen(),
+        '/rental': (_) => const RentalScreen(),
       },
     );
   }

@@ -1,4 +1,6 @@
+import 'package:automaat_mad/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -8,7 +10,6 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
-    final authService = AuthService();
 
     return Scaffold(
       body: Padding(
@@ -16,24 +17,46 @@ class LoginScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('AutoMaat', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+            const Text(
+              'AutoMaat',
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 32),
-            TextField(controller: usernameController, decoration: const InputDecoration(labelText: 'Username')),
+            TextField(
+              controller: usernameController,
+              decoration: const InputDecoration(labelText: 'Username'),
+            ),
             const SizedBox(height: 12),
-            TextField(controller: passwordController, decoration: const InputDecoration(labelText: 'Password'), obscureText: true),
+            TextField(
+              controller: passwordController,
+              decoration: const InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () async {
                 try {
-                  await authService.login(usernameController.text, passwordController.text);
-
-                  Navigator.pushNamed(context, '/home', arguments: usernameController.text);
+                  final authService = Provider.of<AuthService>(context, listen: false);
+                  await authService.login(
+                    usernameController.text,
+                    passwordController.text,
+                  );
+                  ApiService().setToken(authService.token!);
+                  Navigator.pushNamed(
+                    context,
+                    '/home',
+                    arguments: usernameController.text,
+                  );
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(e.toString())));
                 }
               },
               child: const Text('Login'),
             ),
+            const SizedBox(height: 12),
+
             TextButton(
               onPressed: () => Navigator.pushNamed(context, '/register'),
               child: const Text('Register'),

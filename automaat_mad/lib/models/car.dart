@@ -16,13 +16,19 @@ class Car {
   });
 
   factory Car.fromJson(Map<String, dynamic> json) {
-    return Car(
-      id: json['id'],
-      brand: json['brand'],
-      model: json['model'],
-      latitude: json['latitude'] ?? 0.0,
-      longitude: json['longitude'] ?? 0.0,
-      isFavorite: json['isFavorite'] ?? false,
-    );
+  final rawId = json['id'];
+
+  if (rawId == null) {
+    throw Exception('Car.fromJson: id is null → $json');
   }
+
+  return Car(
+    id: rawId is int ? rawId : int.parse(rawId.toString()),
+    brand: json['brand']?.toString() ?? '',
+    model: json['model']?.toString() ?? '',
+    latitude: (json['latitude'] ?? 0).toDouble(),
+    longitude: (json['longitude'] ?? 0).toDouble(),
+    isFavorite: json['isFavorite'] ?? false,
+  );
+}
 }

@@ -1,10 +1,13 @@
 import 'package:automaat_mad/models/car.dart';
+import 'package:automaat_mad/models/rental.dart';
+import 'package:automaat_mad/services/api_service.dart';
+import 'package:automaat_mad/services/rental_service.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 
 class CarDetailScreen extends StatelessWidget {
   final Car car;
-  const CarDetailScreen({super.key, required this.car});
+  CarDetailScreen({super.key, required this.car});
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +22,29 @@ class CarDetailScreen extends StatelessWidget {
             Text('Locatie: ${car.latitude}, ${car.longitude}'),
             const SizedBox(height: 12),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/rental', arguments: car); 
+              onPressed: () async {
+                try {
+                  final api = Provider.of<ApiService>(context, listen: false);
+                  final response = await RentalService(api: api).createRental(car);
+
+                  final rentalWithCar = Rental(
+                    id: response.id,
+                    startDate: response.startDate,
+                    endDate: response.endDate,
+                    state: response.state,
+                    customerId: response.customerId,
+                    latitude: response.latitude,
+                    longitude: response.longitude,
+                    car: car, // hier zet je je originele car
+                  );
+                  Navigator.pushNamed(context, '/rental', arguments: rentalWithCar);
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Fout bij huren van auto: $e')),
+                  );
+                }
               },
-              child: const Text('Huur auto'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Ga naar schade melden
-              },
-              child: const Text('Schade melden'),
+              child: const Text('Start huur'),
             ),
           ],
         ),

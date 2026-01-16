@@ -1,8 +1,10 @@
 import 'package:automaat_mad/models/car.dart';
+import 'package:automaat_mad/services/api_service.dart';
 import 'package:automaat_mad/services/car_service.dart';
 import 'package:automaat_mad/services/rental_service.dart';
 import 'package:automaat_mad/widgets/car_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,14 +15,22 @@ class HomeScreen extends StatefulWidget {
 
 
 class _HomeScreenState extends State<HomeScreen> {
-  final CarService carService = CarService();
-  final RentalService rentalService = RentalService();
-
+  late CarService carService;
+  late RentalService rentalService;
   late Future<_HomeData> homeData;
 
   @override
   void initState() {
     super.initState();
+    carService = CarService();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final api = Provider.of<ApiService>(context, listen: false);
+    rentalService = RentalService(api: api);
+
     homeData = _fetchHomeData();
   }
 
@@ -42,15 +52,15 @@ class _HomeScreenState extends State<HomeScreen> {
           }
 
           if (snapshot.hasError) {
-  return Center(
-    child: Text(
-      snapshot.error.toString(),
-      style: const TextStyle(color: Colors.red),
-    ),
-  );
-}
+            debugPrint(snapshot.error.toString());
+            debugPrint(snapshot.stackTrace.toString());
 
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
 
+          
           final cars = snapshot.data!.cars;
           final rentals = snapshot.data!.rentals;
 
@@ -58,11 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: cars.length,
             itemBuilder: (context, index) {
               final car = cars[index];
-
-              // 🔍 check of deze car een actieve rental heeft
               final hasActiveRental = rentals.any(
                 (rental) =>
-                    rental.carId == car.id &&
+                    rental.car.id == car.id &&
                     rental.state != 'RETURNED',
               );
 
