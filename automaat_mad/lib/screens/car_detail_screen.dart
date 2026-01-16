@@ -1,6 +1,7 @@
 import 'package:automaat_mad/models/car.dart';
 import 'package:automaat_mad/models/rental.dart';
 import 'package:automaat_mad/services/api_service.dart';
+import 'package:automaat_mad/services/auth_service.dart';
 import 'package:automaat_mad/services/rental_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,10 @@ class CarDetailScreen extends StatelessWidget {
               onPressed: () async {
                 try {
                   final api = Provider.of<ApiService>(context, listen: false);
-                  final response = await RentalService(api: api).createRental(car);
+                  final AuthService authService = Provider.of<AuthService>(context, listen: false);
+                  final customerId = authService.user?.id;
+                  debugPrint('Customer ID: $customerId');
+                  final response = await RentalService(api: api).createRental(car: car, customerId: customerId);
 
                   final rentalWithCar = Rental(
                     id: response.id,

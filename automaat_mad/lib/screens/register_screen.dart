@@ -52,7 +52,6 @@ class RegisterScreen extends StatelessWidget {
                       'lastName': lastnameController.text,
                       'email': emailController.text,
                       'langKey': languageController.text,
-                      'activated': true,
                       'password': passwordController.text,
                     },
                     auth: false,
