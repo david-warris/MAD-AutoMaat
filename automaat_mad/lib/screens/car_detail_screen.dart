@@ -39,7 +39,7 @@ class CarDetailScreen extends StatelessWidget {
                     customerId: response.customerId,
                     latitude: response.latitude,
                     longitude: response.longitude,
-                    car: car, // hier zet je je originele car
+                    car: car,
                   );
                   Navigator.pushNamed(context, '/rental', arguments: rentalWithCar);
                 } catch (e) {

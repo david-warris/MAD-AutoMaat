@@ -49,7 +49,7 @@ class RentalScreen extends StatelessWidget {
             const SizedBox(height: 12),
             ElevatedButton(
               onPressed: () {
-                // Ga naar schade melden
+                Navigator.pushNamed(context, '/damage_report', arguments: rental);
               },
               child: const Text('Schade melden'),
             ),
