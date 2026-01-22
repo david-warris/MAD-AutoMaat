@@ -2,6 +2,7 @@ import 'package:automaat_mad/models/rental.dart';
 import 'package:automaat_mad/services/api_service.dart';
 import 'package:automaat_mad/services/location_service.dart';
 import 'package:automaat_mad/services/rental_service.dart';
+import 'package:automaat_mad/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,8 +12,8 @@ class RentalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final rental = ModalRoute.of(context)!.settings.arguments as Rental;
-    return Scaffold(
-      appBar: AppBar(title: Text('${rental.car.brand} ${rental.car.model}')),
+    return AppScaffold(
+      title: '${rental.car.brand} ${rental.car.model}',
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

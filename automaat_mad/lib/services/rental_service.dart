@@ -8,8 +8,18 @@ class RentalService {
   final ApiService api;
   RentalService({required this.api});
 
-  Future<List<Rental>> fetchRentals({String? token}) async {
+  Future<List<Rental>> fetchRentals() async {
     final response = await api.get('/api/rentals');
+    if (response.statusCode == 200) {
+      List data = jsonDecode(response.body);
+      return data.map((e) => Rental.fromJson(e)).toList();
+    } else {
+      throw Exception('Kan auto’s niet ophalen');
+    }
+  }
+
+  Future<List<Rental>> fetchRentalsForCustomer(int customerId) async {
+    final response = await api.get('/api/rentals', queryParameters: {'customerId.specified': 'true', 'customerId.in': customerId.toString()});
     if (response.statusCode == 200) {
       List data = jsonDecode(response.body);
       return data.map((e) => Rental.fromJson(e)).toList();

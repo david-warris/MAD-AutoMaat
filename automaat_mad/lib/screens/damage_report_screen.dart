@@ -1,5 +1,6 @@
 import 'package:automaat_mad/services/api_service.dart';
 import 'package:automaat_mad/services/damage_report_service.dart';
+import 'package:automaat_mad/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,10 +13,8 @@ class DamageReportScreen extends StatelessWidget {
     final resultController = TextEditingController();
     final descriptionController = TextEditingController();
     final photoController = TextEditingController();
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Damage Report'),
-      ),
+    return AppScaffold(
+      title: 'Damage Report',
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(

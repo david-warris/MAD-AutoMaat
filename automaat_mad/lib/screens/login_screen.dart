@@ -1,4 +1,5 @@
 import 'package:automaat_mad/services/api_service.dart';
+import 'package:automaat_mad/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
@@ -11,7 +12,8 @@ class LoginScreen extends StatelessWidget {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
 
-    return Scaffold(
+    return AppScaffold(
+      title: 'Login',
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(

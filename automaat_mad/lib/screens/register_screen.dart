@@ -1,4 +1,5 @@
 import 'package:automaat_mad/services/api_service.dart';
+import 'package:automaat_mad/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -15,7 +16,8 @@ class RegisterScreen extends StatelessWidget {
     final passwordRecheckController = TextEditingController();
     final apiService = ApiService();
 
-    return Scaffold(
+    return AppScaffold(
+      title: 'Register',
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
