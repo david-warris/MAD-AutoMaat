@@ -2,6 +2,7 @@ import 'package:automaat_mad/models/car.dart';
 import 'package:automaat_mad/services/api_service.dart';
 import 'package:automaat_mad/services/car_service.dart';
 import 'package:automaat_mad/services/rental_service.dart';
+import 'package:automaat_mad/widgets/appbar.dart';
 import 'package:automaat_mad/widgets/car_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,8 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Beschikbare auto’s')),
+    return AppScaffold(
+      title: 'Beschikbare auto’s',
       body: FutureBuilder<_HomeData>(
         future: homeData,
         builder: (context, snapshot) {

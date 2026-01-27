@@ -1,3 +1,4 @@
+import 'package:automaat_mad/screens/damage_report_screen.dart';
 import 'package:automaat_mad/screens/rental_screen.dart';
 import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
@@ -19,6 +20,7 @@ class AutoMaatApp extends StatelessWidget {
         '/home': (_) => const HomeScreen(),
         '/profile': (_) => const ProfileScreen(),
         '/rental': (_) => const RentalScreen(),
+        '/damage_report': (_) => const DamageReportScreen(),
       },
     );
   }

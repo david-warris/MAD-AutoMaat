@@ -3,6 +3,7 @@ import 'package:automaat_mad/models/rental.dart';
 import 'package:automaat_mad/services/api_service.dart';
 import 'package:automaat_mad/services/auth_service.dart';
 import 'package:automaat_mad/services/rental_service.dart';
+import 'package:automaat_mad/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,8 +13,8 @@ class CarDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('${car.brand} ${car.model}')),
+    return AppScaffold(
+      title: '${car.brand} ${car.model}',
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -39,7 +40,7 @@ class CarDetailScreen extends StatelessWidget {
                     customerId: response.customerId,
                     latitude: response.latitude,
                     longitude: response.longitude,
-                    car: car, // hier zet je je originele car
+                    car: car,
                   );
                   Navigator.pushNamed(context, '/rental', arguments: rentalWithCar);
                 } catch (e) {

@@ -64,10 +64,16 @@ class ApiService {
 
   Future<http.Response> get(
   String endpoint, {
+  Map<String, dynamic>? queryParameters,
   bool auth = true,
   }) async {
+    final uri = Uri.parse('$baseUrl$endpoint').replace(
+    queryParameters: queryParameters?.map(
+      (key, value) => MapEntry(key, value.toString()),
+    ),
+  );
   final response = await http.get(
-    Uri.parse('$baseUrl$endpoint'),
+    uri,
     headers: _headers(auth: auth),
   );
 
