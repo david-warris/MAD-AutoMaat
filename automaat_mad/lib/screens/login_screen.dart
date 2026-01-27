@@ -12,56 +12,143 @@ class LoginScreen extends StatelessWidget {
     final passwordController = TextEditingController();
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'AutoMaat',
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 32),
-            TextField(
-              controller: usernameController,
-              decoration: const InputDecoration(labelText: 'Username'),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  final authService = Provider.of<AuthService>(context, listen: false);
-                  await authService.login(
-                    usernameController.text,
-                    passwordController.text,
-                  );
-                  ApiService().setToken(authService.token!);
-                  Navigator.pushNamed(
-                    context,
-                    '/home',
-                    arguments: usernameController.text,
-                  );
-                } catch (e) {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(e.toString())));
-                }
-              },
-              child: const Text('Login'),
-            ),
-            const SizedBox(height: 12),
-
-            TextButton(
-              onPressed: () => Navigator.pushNamed(context, '/register'),
-              child: const Text('Register'),
-            ),
-          ],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF1E5A8E), Color(0xFF2B7AB8)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'VROOM',
+                style: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                  letterSpacing: 2.0,
+                ),
+              ),
+              const SizedBox(height: 60),
+              // Username Field
+              TextField(
+                controller: usernameController,
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  hintText: 'USERNAME',
+                  hintStyle: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  filled: true,
+                  fillColor: const Color(0xFFFAD94D),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                ),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 24),
+              // Password Field
+              TextField(
+                controller: passwordController,
+                textAlign: TextAlign.center,
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: 'PASSWORD',
+                  hintStyle: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  filled: true,
+                  fillColor: const Color(0xFFFAD94D),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                ),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 40),
+              // Confirm Button
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    final authService =
+                        Provider.of<AuthService>(context, listen: false);
+                    await authService.login(
+                      usernameController.text,
+                      passwordController.text,
+                    );
+                    if (context.mounted) {
+                      ApiService().setToken(authService.token!);
+                      Navigator.pushNamed(
+                        context,
+                        '/home',
+                        arguments: usernameController.text,
+                      );
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(e.toString())),
+                      );
+                    }
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF5FD068),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 48, vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  elevation: 0,
+                ),
+                child: const Text(
+                  'CONFIRM',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              TextButton(
+                onPressed: () => Navigator.pushNamed(context, '/register'),
+                child: const Text(
+                  'Register',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
