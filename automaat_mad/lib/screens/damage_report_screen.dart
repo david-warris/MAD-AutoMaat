@@ -20,61 +20,96 @@ class DamageReportScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
+            _buildTextField(
               controller: odometerController,
-              decoration: InputDecoration(
-                labelText: 'Odometer',
-                border: OutlineInputBorder(),
-              ),
+              labelText: 'Odometer',
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 12),
-            TextField(
+            _buildTextField(
               controller: resultController,
-              decoration: InputDecoration(
-                labelText: 'Result',
-                border: OutlineInputBorder(),
-              ),
+              labelText: 'Result',
             ),
             const SizedBox(height: 12),
-            TextField(
+            _buildTextField(
               controller: descriptionController,
-              decoration: InputDecoration(
-                labelText: 'Description',
-                border: OutlineInputBorder(),
-              ),
+              labelText: 'Description',
               maxLines: 3,
             ),
             const SizedBox(height: 12),
-            TextField(
+            _buildTextField(
               controller: photoController,
-              decoration: InputDecoration(
-                labelText: 'Photo',
-                border: OutlineInputBorder(),
+              labelText: 'Photo',
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'Damage Report Details',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
             const SizedBox(height: 20),
-            Text(
-              'Damage Report',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async{
-                final api = Provider.of<ApiService>(context, listen: false);
-                await DamageReportService(api: api).submitReport(
-                  odometer: odometerController.text,
-                  result: resultController.text,
-                  description: descriptionController.text,
-                  photo: photoController.text,
-                );
-                // TODO: Submit damage report
-              },
-              child: const Text('Submit'),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFFFC107),
+                  foregroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                onPressed: () async {
+                  final api = Provider.of<ApiService>(context, listen: false);
+                  await DamageReportService(api: api).submitReport(
+                    odometer: odometerController.text,
+                    result: resultController.text,
+                    description: descriptionController.text,
+                    photo: photoController.text,
+                  );
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Submit Report',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String labelText,
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+  }) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: const TextStyle(color: Color(0xFFFFC107)),
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: Color(0xFFFFC107)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: Color(0xFFFFC107)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: Color(0xFFFFC107), width: 2),
+        ),
+      ),
+      keyboardType: keyboardType,
+      maxLines: maxLines,
+      style: const TextStyle(color: Colors.black),
     );
   }
 }

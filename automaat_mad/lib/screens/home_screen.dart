@@ -66,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
           final rentals = snapshot.data!.rentals;
 
           return ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 10),
             itemCount: cars.length,
             itemBuilder: (context, index) {
               final car = cars[index];

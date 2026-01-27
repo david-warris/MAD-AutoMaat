@@ -13,14 +13,37 @@ class AppScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF1E5A96),
       appBar: AppBar(
-        title: Text(title),
+        backgroundColor: const Color(0xFF1E5A96),
+        title: Text(
+          title.toUpperCase(),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        elevation: 0,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
+          GestureDetector(
+            onTap: () {
               Navigator.pushNamed(context, '/profile');
             },
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 2),
+                ),
+                child: const Icon(
+                  Icons.person,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ),
+            ),
           ),
         ],
       ),

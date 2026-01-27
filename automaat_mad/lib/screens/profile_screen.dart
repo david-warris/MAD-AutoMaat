@@ -16,7 +16,19 @@ class ProfileScreen extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Profiel')),
+      backgroundColor: const Color(0xFF1E5A96),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF1E5A96),
+        title: const Text(
+          'PROFIEL',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -24,13 +36,35 @@ class ProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  const CircleAvatar(radius: 50),
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 2),
+                    ),
+                    child: const CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.grey,
+                      child: Icon(
+                        Icons.person,
+                        size: 40,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 16),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFFC107),
+                      foregroundColor: Colors.black,
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    ),
                     onPressed: () {
                       // Change password logic
                     },
-                    child: const Text('Wachtwoord wijzigen'),
+                    child: const Text(
+                      'Wachtwoord wijzigen',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ),
@@ -42,7 +76,11 @@ class ProfileScreen extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Mijn verhuuringen',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -61,10 +99,20 @@ class ProfileScreen extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: rentals.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(rentals[index].startDate.toString()),
-                      subtitle: Text(rentals[index].endDate.toString()),
-                      trailing: const Icon(Icons.arrow_forward),
+                    return Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFC107),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          'From: ${rentals[index].startDate.toString()}',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text('To: ${rentals[index].endDate.toString()}'),
+                        trailing: const Icon(Icons.arrow_forward),
+                      ),
                     );
                   },
                 );

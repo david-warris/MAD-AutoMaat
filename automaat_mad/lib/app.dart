@@ -12,7 +12,14 @@ class AutoMaatApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'AutoMaat',
-      theme: ThemeData(colorSchemeSeed: Colors.deepPurple, useMaterial3: true),
+      theme: ThemeData(
+        colorSchemeSeed: const Color(0xFF1E5A96), // Blue color
+        useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF1E5A96),
+          elevation: 0,
+        ),
+      ),
       initialRoute: '/login',
       routes: {
         '/login': (_) => const LoginScreen(),
