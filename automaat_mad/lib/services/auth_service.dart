@@ -10,13 +10,18 @@ class AuthService with ChangeNotifier {
   User? _user;
 
   final _storage = FlutterSecureStorage();
-  final ApiService api ;
+  final ApiService api;
 
   AuthService({required this.api});
 
   String? get token => _token;
   User? get user => _user;
   bool get isLoggedIn => _token != null;
+
+  Future<void> init() async {
+    await tryAutoLogin();
+    notifyListeners(); 
+  }
 
   Future<void> login(String username, String password) async {
     if (username == 'bypass' && password == 'bypass') {
@@ -75,7 +80,7 @@ class AuthService with ChangeNotifier {
     final storedToken = await _storage.read(key: 'authToken');
     if (storedToken != null) {
       _token = storedToken;
-      api.setToken(_token); 
+      api.setToken(_token);
       await fetchUser();
     }
   }

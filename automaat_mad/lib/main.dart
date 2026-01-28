@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 
 void main() {
   final apiService = ApiService();
+  final authService = AuthService(api: apiService);
+  authService.init();
   runApp(
     MultiProvider(
       providers: [
