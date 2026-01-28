@@ -7,6 +7,7 @@ class Car {
   final bool isFavorite;
   final String? picture;
   final String? pictureContentType;
+  final double? price;
 
   Car({
     required this.id,
@@ -17,6 +18,7 @@ class Car {
     this.isFavorite = false,
     this.picture,
     this.pictureContentType,
+    this.price,
   });
 
   factory Car.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,7 @@ class Car {
     isFavorite: json['isFavorite'] ?? false,
     picture: json['picture']?.toString(),
     pictureContentType: json['pictureContentType']?.toString(),
+    price: json['price'] != null ? (json['price'] as num).toDouble() : null,
   );
 }
 }

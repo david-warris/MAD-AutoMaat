@@ -119,9 +119,9 @@ class CarCard extends StatelessWidget {
                       color: Colors.grey,
                       size: 20,
                     ),
-                  const Text(
-                    'PRIJS',
-                    style: TextStyle(
+                  Text(
+                    car.price != null ? '€${car.price!.toStringAsFixed(2)}' : 'N/A',
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
