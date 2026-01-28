@@ -4,22 +4,22 @@ import 'dart:convert';
 
 class ApiService {
   static const String baseUrl = 'http://localhost:8080';
-  String? _token;
+  String? token;
 
   void setToken(String? token) {
-    _token = token; 
+    this.token = token; 
   }
 
-  Map<String, String> _headers({bool auth = true}) {
+  Map<String, String> headers({bool auth = true}) {
     final headers = {'Content-Type': 'application/json'};
-    if (auth && _token != null) {
-      headers['Authorization'] = 'Bearer $_token';
+    if (auth && token != null) {
+      headers['Authorization'] = 'Bearer $token';
     }
     return headers;
   }
 
   
-  http.Response _handleResponse(http.Response response) {
+  http.Response handleResponse(http.Response response) {
   switch (response.statusCode) {
     case 200:
     case 201:
@@ -30,7 +30,7 @@ class ApiService {
 
     case 401:
       debugPrint('Unauthorized: ${response.body}');
-      debugPrint(_token);
+      debugPrint(token);
       throw Exception('Niet ingelogd');
 
     case 403:
@@ -55,11 +55,11 @@ class ApiService {
   }) async {
   final response = await http.post(
     Uri.parse('$baseUrl$endpoint'),
-    headers: _headers(auth: auth),
+    headers: headers(auth: auth),
     body: jsonEncode(body),
   );
 
-  return _handleResponse(response);
+  return handleResponse(response);
   }
 
   Future<http.Response> get(
@@ -74,10 +74,10 @@ class ApiService {
   );
   final response = await http.get(
     uri,
-    headers: _headers(auth: auth),
+    headers: headers(auth: auth),
   );
 
-  return _handleResponse(response);
+  return handleResponse(response);
   }
 
   Future<http.Response> put(
@@ -87,11 +87,11 @@ class ApiService {
   }) async {
   final response = await http.put(
     Uri.parse('$baseUrl$endpoint'),
-    headers: _headers(auth: auth),
+    headers: headers(auth: auth),
     body: jsonEncode(body),
   );
 
-  return _handleResponse(response);
+  return handleResponse(response);
   }
 
   Future<http.Response> patch(
@@ -101,11 +101,12 @@ class ApiService {
   }) async {
   final response = await http.patch(
     Uri.parse('$baseUrl$endpoint'),
-    headers: _headers(auth: auth),
+    headers: headers(auth: auth),
     body: jsonEncode(body),
   );
 
-  return _handleResponse(response);
+  return handleResponse(response);
+
   }
   Future<http.Response> delete(
   String endpoint, {
@@ -113,9 +114,9 @@ class ApiService {
   }) async {
   final response = await http.delete(
     Uri.parse('$baseUrl$endpoint'),
-    headers: _headers(auth: auth),
+    headers: headers(auth: auth),
   );
 
-  return _handleResponse(response);
+  return handleResponse(response);
   } 
 }
