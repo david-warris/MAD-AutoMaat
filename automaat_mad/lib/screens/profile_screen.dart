@@ -1,6 +1,7 @@
 import 'package:automaat_mad/services/api_service.dart';
 import 'package:automaat_mad/services/auth_service.dart';
 import 'package:automaat_mad/services/rental_service.dart';
+import 'package:automaat_mad/screens/reset_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -59,7 +60,10 @@ class ProfileScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     ),
                     onPressed: () {
-                      // Change password logic
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const ResetPasswordScreen()),
+                      );
                     },
                     child: const Text(
                       'Wachtwoord wijzigen',
