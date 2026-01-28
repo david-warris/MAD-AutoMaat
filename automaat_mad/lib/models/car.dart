@@ -5,6 +5,8 @@ class Car {
   final double latitude;
   final double longitude;
   final bool isFavorite;
+  final String? picture;
+  final String? pictureContentType;
 
   Car({
     required this.id,
@@ -13,6 +15,8 @@ class Car {
     required this.latitude,
     required this.longitude,
     this.isFavorite = false,
+    this.picture,
+    this.pictureContentType,
   });
 
   factory Car.fromJson(Map<String, dynamic> json) {
@@ -29,6 +33,8 @@ class Car {
     latitude: (json['latitude'] ?? 0).toDouble(),
     longitude: (json['longitude'] ?? 0).toDouble(),
     isFavorite: json['isFavorite'] ?? false,
+    picture: json['picture']?.toString(),
+    pictureContentType: json['pictureContentType']?.toString(),
   );
 }
 }

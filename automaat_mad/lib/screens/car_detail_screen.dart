@@ -6,6 +6,7 @@ import 'package:automaat_mad/services/rental_service.dart';
 import 'package:automaat_mad/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:convert';
 
 class CarDetailScreen extends StatelessWidget {
   final Car car;
@@ -20,18 +21,36 @@ class CarDetailScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              // Car Image Placeholder
-              Container(
-                width: double.infinity,
-                height: 250,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFFC107),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(
-                  Icons.directions_car,
-                  size: 80,
-                  color: Colors.white,
+              // Car Image
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  width: double.infinity,
+                  height: 250,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFC107),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: car.picture != null && car.picture!.isNotEmpty
+                      ? Image.memory(
+                          base64Decode(car.picture!),
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: const Color(0xFFFFC107),
+                              child: const Icon(
+                                Icons.directions_car,
+                                size: 80,
+                                color: Colors.white,
+                              ),
+                            );
+                          },
+                        )
+                      : const Icon(
+                          Icons.directions_car,
+                          size: 80,
+                          color: Colors.white,
+                        ),
                 ),
               ),
               const SizedBox(height: 24),

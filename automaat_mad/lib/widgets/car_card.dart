@@ -1,6 +1,7 @@
 import 'package:automaat_mad/models/car.dart';
 import 'package:automaat_mad/screens/car_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
 
 
 class CarCard extends StatelessWidget {
@@ -42,10 +43,29 @@ class CarCard extends StatelessWidget {
                   width: 100,
                   height: 100,
                   color: Colors.grey[300],
-                  child: Image.asset(
-                    'assets/placeholder_car.png',
-                    fit: BoxFit.cover,
-                  ),
+                  child: car.picture != null && car.picture!.isNotEmpty
+                      ? Image.memory(
+                          base64Decode(car.picture!),
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: Colors.grey[300],
+                              child: Icon(
+                                Icons.directions_car,
+                                size: 40,
+                                color: Colors.grey[600],
+                              ),
+                            );
+                          },
+                        )
+                      : Container(
+                          color: Colors.grey[300],
+                          child: Icon(
+                            Icons.directions_car,
+                            size: 40,
+                            color: Colors.grey[600],
+                          ),
+                        ),
                 ),
               ),
               const SizedBox(width: 16),
