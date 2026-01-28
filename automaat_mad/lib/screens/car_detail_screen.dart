@@ -4,6 +4,7 @@ import 'package:automaat_mad/services/api_service.dart';
 import 'package:automaat_mad/services/auth_service.dart';
 import 'package:automaat_mad/services/rental_service.dart';
 import 'package:automaat_mad/widgets/appbar.dart';
+import 'package:automaat_mad/widgets/favourite_star.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
@@ -91,19 +92,7 @@ class CarDetailScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Icon(
-                          car.isFavorite ? Icons.star : Icons.star_border,
-                          color: car.isFavorite ? Colors.orange : Colors.grey,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          car.isFavorite ? 'Favorite' : 'Add to favorites',
-                          style: const TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
+                    Row(children: [FavoriteStar(carId: car.id.toString(), text: true)]),
                   ],
                 ),
               ),
@@ -119,11 +108,19 @@ class CarDetailScreen extends StatelessWidget {
                   ),
                   onPressed: () async {
                     try {
-                      final api = Provider.of<ApiService>(context, listen: false);
-                      final AuthService authService = Provider.of<AuthService>(context, listen: false);
+                      final api = Provider.of<ApiService>(
+                        context,
+                        listen: false,
+                      );
+                      final AuthService authService = Provider.of<AuthService>(
+                        context,
+                        listen: false,
+                      );
                       final customerId = authService.user?.id;
                       debugPrint('Customer ID: $customerId');
-                      final response = await RentalService(api: api).createRental(car: car, customerId: customerId);
+                      final response = await RentalService(
+                        api: api,
+                      ).createRental(car: car, customerId: customerId);
 
                       final rentalWithCar = Rental(
                         id: response.id,
@@ -135,7 +132,11 @@ class CarDetailScreen extends StatelessWidget {
                         longitude: response.longitude,
                         car: car,
                       );
-                      Navigator.pushNamed(context, '/rental', arguments: rentalWithCar);
+                      Navigator.pushNamed(
+                        context,
+                        '/rental',
+                        arguments: rentalWithCar,
+                      );
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Fout bij huren van auto: $e')),

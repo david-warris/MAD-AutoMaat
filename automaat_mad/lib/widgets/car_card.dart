@@ -1,8 +1,8 @@
 import 'package:automaat_mad/models/car.dart';
 import 'package:automaat_mad/screens/car_detail_screen.dart';
+import 'package:automaat_mad/widgets/favourite_star.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-
 
 class CarCard extends StatelessWidget {
   final Car car;
@@ -14,9 +14,10 @@ class CarCard extends StatelessWidget {
     return GestureDetector(
       onTap: available
           ? () {
-              Navigator.push(context, MaterialPageRoute(
-                builder: (_) => CarDetailScreen(car: car)
-              ));
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => CarDetailScreen(car: car)),
+              );
             }
           : null,
       child: Container(
@@ -107,18 +108,7 @@ class CarCard extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  if (car.isFavorite)
-                    const Icon(
-                      Icons.star,
-                      color: Colors.orange,
-                      size: 20,
-                    )
-                  else
-                    const Icon(
-                      Icons.star_border,
-                      color: Colors.grey,
-                      size: 20,
-                    ),
+                  FavoriteStar(carId: car.id.toString()),
                   const Text(
                     'PRIJS',
                     style: TextStyle(
@@ -129,6 +119,23 @@ class CarCard extends StatelessWidget {
                   ),
                 ],
               ),
+              // Column(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     if (car.isFavorite)
+              //       const Icon(Icons.star, color: Colors.orange, size: 20)
+              //     else
+              //       const Icon(Icons.star_border, color: Colors.grey, size: 20),
+              //     const Text(
+              //       'PRIJS',
+              //       style: TextStyle(
+              //         fontSize: 12,
+              //         fontWeight: FontWeight.bold,
+              //         color: Colors.black,
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
