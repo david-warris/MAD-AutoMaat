@@ -54,19 +54,33 @@ class AuthService with ChangeNotifier {
   }
 
   Future<void> fetchUser() async {
-    if (_token == 'dummy_token') {
-      _user = User(id: 0, username: 'Bypass User');
-      notifyListeners();
-      return;
-    }
-
-    final response = await api.get('/api/AM/account');
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      _user = User(id: data['id'], username: data['login']);
-      notifyListeners();
-    }
+  if (_token == 'dummy_token') {
+    _user = User(id: 0, username: 'Bypass User');
+    notifyListeners();
+    return;
   }
+
+  final response = await api.get('/api/account');
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+
+    // 🔧 FIX voor backend ID bug
+    final originalId = data['id'].toString();
+    final fixedIdString = originalId.replaceAllMapped(
+      RegExp(r'^(\d)(\d)(\d)(\d)$'),
+      (match) => '${match.group(1)}${match.group(3)}${match.group(2)}${match.group(4)}',
+    );
+
+    final fixedId = int.parse(fixedIdString);
+
+    _user = User(
+      id: fixedId,
+      username: data['login'],
+    );
+
+    notifyListeners();
+  }
+}
 
   Future<void> logout() async {
     _user = null;
